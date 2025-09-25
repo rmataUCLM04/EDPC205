@@ -1,3 +1,5 @@
+package introduccion;
+
 import java.io.FileNotFoundException;
 import utils.SequentialFile;
 
@@ -25,3 +27,4 @@ public class MainPrograma{
         }
     }
 }
+
