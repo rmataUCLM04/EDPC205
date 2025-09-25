@@ -13,7 +13,7 @@ package practicas_25_26;
 
 import java.io.*;
 import java.util.*;
-public class FicheroSecuencial <T extends LineaProcesable> {
+public class FicheroSecuencial <T extends SequentialFileReader> {
 	
 	private File file;
 	private Scanner scan;
@@ -160,3 +160,4 @@ public class FicheroSecuencial <T extends LineaProcesable> {
 		return !scan.hasNextLine();
 	}
 }
+
