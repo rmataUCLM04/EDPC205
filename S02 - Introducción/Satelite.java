@@ -1,3 +1,4 @@
+package S02-Introduccion;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
@@ -88,6 +89,7 @@ public String toString() {
             + meanMotion + ", eccentricity=" + eccentricity + ", inclination=" + inclination + ", rean=" + rean
             + ", argumentPericenter=" + argumentPericenter + "]";
 }
+
 
 
 }
