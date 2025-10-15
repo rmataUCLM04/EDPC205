@@ -1,5 +1,5 @@
-import paquete;
-public class Peticion {
+
+public class Peticion <T>{
     private String requestID;
     private String playerID;
     private boolean premiumSubscription;
@@ -18,7 +18,7 @@ public class Peticion {
 
     public void leerDatos(String[] data){
         this.requestID = data[0];
-        this.skillLevel = data[1].;
+        this.skillLevel = Integer.parseInt(data[1]);
         this.premiumSubscription= Boolean.parseBoolean(data[2]);
         this.matchType = data[3].charAt(0);
         this.playerID = data[4];
