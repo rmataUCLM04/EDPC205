@@ -182,7 +182,7 @@ public class principal {
                     } 
 
                 } else {
-                    // Jugador SIN premium
+                    // Jugador NO premium
                     if (peticionActual.getMatchType() == 'L'){
                         // Partido solicitado largo
                         noPremiumL.offer(peticionActual);
