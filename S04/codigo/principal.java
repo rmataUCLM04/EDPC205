@@ -13,15 +13,14 @@
 *         * no premium, partido largo
 *         * no premium, partido corto
 *       Usando PriorityBlockingQueue para premium (prioridad = mayor skillLevel)
-*       y LinkedBlockingQueue (FIFO) para no premium, tal y como exige la
-*       práctica de laboratorio de colas (Curso 2025/26).
+*       y LinkedBlockingQueue (FIFO) para no premium.
 *     - Simular la creación de partidos siguiendo el orden:
 *         1. premium largos
 *         2. premium cortos
 *         3. no premium largos
 *         4. no premium cortos
 *       generando varios emparejamientos premium por cada emparejamiento
-*       no premium, respetando la política del sistema descrita.
+*       no premium.
 *     - Imprimir por consola el proceso de lectura y de emparejamiento.
 *
 **********************************************************************/
