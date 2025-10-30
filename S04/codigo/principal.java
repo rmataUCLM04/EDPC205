@@ -88,7 +88,7 @@ public class principal {
         Queue<Peticion> partidosNoPremiumCortos = new LinkedBlockingQueue<Peticion>();
         
         System.out.println("======================");
-        System.out.println("Procesando peticion");
+        System.out.println("Procesando peticiones");
         System.out.println("======================");
 
         // Carga de datos desde el fichero y clasificación en colas
@@ -192,12 +192,6 @@ public class principal {
                     }
                 }
             }
-
-            // Estado final de las colas tras la lectura del fichero
-            System.out.println("Tamaño premiC " + premiumC.size());
-            System.out.println("Tamaño premiL " + premiumL.size());
-            System.out.println("Tamaño NPpremiC " + noPremiumC.size());
-            System.out.println("Tamaño NOpremiL " + noPremiumL.size());
             
         } catch (FileNotFoundException e) {
             // Error al abrir el fichero
