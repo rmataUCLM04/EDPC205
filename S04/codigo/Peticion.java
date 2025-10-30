@@ -1,86 +1,57 @@
 /*********************************************************************
 *
 * Nombre de la clase: Peticion
-* Iniciales autores / Grupo prácticas: RMM, HJG, PMS / G05
-* Fecha de creación: 
-* Versión de la clase: 
+* Autores: RMM, HJG, PMS
+* Fecha de creación:
+* Versión de la clase:
 * Descripción de la clase:
-*   Representa una petición de partida online en el sistema de emparejamiento
-*   del videojuego. Cada petición contiene la información necesaria para
-*   encolar al jugador en la cola correspondiente (premium/no premium,
-*   partido largo/corto) y para priorizarlo según su nivel de habilidad.
+*   Representa una solicitud (petición) de un jugador para formar parte
+*   de un partido. Contiene información sobre el jugador, su nivel de
+*   habilidad, si es usuario premium y el tipo de partido solicitado.
+*   Implementa la interfaz SequentialFileReader para poder leer sus datos
+*   desde un fichero secuencial, y la interfaz Comparable<Peticion> para
+*   establecer un criterio de ordenación entre peticiones.
 *
-**********************************************************************/
+*********************************************************************/
 
 public class Peticion implements SequentialFileReader, Comparable<Peticion> {
-
-    private String requestID;          // Identificador único de la petición en el sistema
-    private String playerID;           // Identificador único del jugador que hace la petición
-    private boolean premiumSubscription; // Indica si el jugador tiene suscripción premium (true) o no (false)
-    private int skillLevel;            // Nivel de habilidad del jugador (se usa para prioridad en premium)
-    private char matchType;            // Tipo de partido solicitado: 'L' (largo, ~30 min) o 'S' (corto, ~10 min)
+    
+    // Atributos que almacenan la información de cada petición.
+    private String requestID;             // Identificador único de la petición.
+    private String playerID;              // Identificador del jugador.
+    private boolean premiumSubscription;  // Indica si el jugador tiene suscripción premium.
+    private int skillLevel;               // Nivel de habilidad del jugador.
+    private char matchType;               // Tipo de partido ('L' largo, 'C' corto, etc.).
 
     /*********************************************************************
     *
-    * Nombre del método: Peticion
-    *
-    * Autor original: XX
+    * Nombre del método: Peticion (constructor por defecto)
     *
     * Descripción del método:
-    *   Constructor vacío. Crea una petición sin inicializar campos.
-    *   Útil cuando primero se crea el objeto y después se rellenan los
-    *   valores leyendo del fichero secuencial.
-    *
-    * Argumentos de entrada:
-    *   (ninguno)
-    *
-    * Valor de retorno:
-    *   (no aplica, es un constructor)
-    *
-    * Ficheros requeridos:
-    *   No requiere ficheros.
-    *
-    * Excepciones comprobadas:
-    *   Ninguna.
+    *   Constructor vacío que crea un objeto Peticion sin inicializar
+    *   sus atributos. Útil para cargar datos posteriormente con readData().
     *
     *********************************************************************/
     public Peticion() {
-        // Constructor por defecto sin inicialización explícita
+        
     }
 
     /*********************************************************************
     *
-    * Nombre del método: Peticion
-    *
-    * Autor original: XX
+    * Nombre del método: Peticion (constructor parametrizado)
     *
     * Descripción del método:
-    *   Constructor completo. Crea una petición con todos los datos
-    *   relevantes para el emparejamiento.
+    *   Inicializa un objeto Peticion con los valores recibidos por parámetro.
     *
     * Argumentos de entrada:
-    *   String requestID            -> identificador interno de la petición
-    *   String playerID             -> identificador del jugador
-    *   boolean premiumSubscription -> true si el jugador es premium
-    *   int skillLevel              -> nivel de habilidad del jugador
-    *   char matchType              -> tipo de partido solicitado ('L' o 'S')
-    *
-    * Valor de retorno:
-    *   (no aplica, es un constructor)
-    *
-    * Ficheros requeridos:
-    *   No requiere ficheros.
-    *
-    * Excepciones comprobadas:
-    *   Ninguna.
+    *   - String requestID: identificador único de la petición.
+    *   - String playerID: identificador del jugador.
+    *   - boolean premiumSubscription: true si el jugador es premium.
+    *   - int skillLevel: nivel de habilidad del jugador.
+    *   - char matchType: tipo de partido solicitado.
     *
     *********************************************************************/
-    public Peticion(String requestID,
-                    String playerID,
-                    boolean premiumSubscription,
-                    int skillLevel,
-                    char matchType) {
-
+    public Peticion(String requestID, String playerID, boolean premiumSubscription, int skillLevel, char matchType) {
         this.requestID = requestID;
         this.playerID = playerID;
         this.premiumSubscription = premiumSubscription;
@@ -90,46 +61,50 @@ public class Peticion implements SequentialFileReader, Comparable<Peticion> {
 
     /*********************************************************************
     *
-    * Nombre del método: readData
-    *
-    * Autor original: XX
+    * Nombre del método: compareTo
     *
     * Descripción del método:
-    *   Carga en el objeto Peticion los datos leídos de una línea del
-    *   fichero CSV. La línea ya viene troceada en campos (split por ';').
-    *   El orden esperado de los campos es:
-    *     [0] requestID
-    *     [1] playerID
-    *     [2] premiumSubscription ("true"/"false")
-    *     [3] skillLevel (entero)
-    *     [4] matchType ('L' o 'S')
+    *   Define el criterio de comparación entre objetos Peticion para
+    *   permitir su ordenación. Si la petición es de un jugador premium,
+    *   se compara según el nivel de habilidad (mayor skillLevel tiene
+    *   más prioridad). Si no es premium, no se aplica prioridad.
     *
     * Argumentos de entrada:
-    *   String[] data -> array de Strings con los campos de la línea CSV.
+    *   - Peticion o: otra petición con la que comparar.
     *
     * Valor de retorno:
-    *   void. El propio objeto actualiza sus atributos internos.
-    *
-    * Ficheros requeridos:
-    *   Se asume que la lectura del fichero ya ha sido realizada por
-    *   otra clase (por ejemplo FicheroSecuencial) y que aquí sólo se
-    *   interpretan los datos.
-    *
-    * Excepciones comprobadas:
-    *   NumberFormatException -> si skillLevel no es un entero válido.
-    *   ArrayIndexOutOfBoundsException -> si la línea no tiene todos
-    *                                     los campos esperados.
+    *   int -> negativo si this tiene más prioridad, positivo si la tiene 'o',
+    *   cero si no hay diferencia.
     *
     *********************************************************************/
-    @Override
+    public int compareTo(Peticion o) {
+        int ordenar = 0;
+        if (premiumSubscription) {
+            ordenar = Integer.compare(o.getSkillLevel(), skillLevel); // Orden descendente por nivel.
+        } else {
+            ordenar = 0; // No se aplica orden especial si no es premium.
+        }
+        return ordenar; 
+    }
+
+    /*********************************************************************
+    *
+    * Nombre del método: readData
+    *
+    * Descripción del método:
+    *   Carga los datos de la petición a partir de un vector de cadenas
+    *   (normalmente leído desde un fichero CSV mediante FicheroSecuencial).
+    *
+    * Argumentos de entrada:
+    *   - String[] data: vector con los datos de la línea leída.
+    *                    data[0] → requestID
+    *                    data[1] → playerID
+    *                    data[2] → premiumSubscription
+    *                    data[3] → skillLevel
+    *                    data[4] → matchType
+    *
+    *********************************************************************/
     public void readData(String[] data) {
-
-        // data[0] -> requestID
-        // data[1] -> playerID
-        // data[2] -> premiumSubscription ("true"/"false")
-        // data[3] -> skillLevel (ej. "87")
-        // data[4] -> matchType ('L' o 'S')
-
         this.requestID = data[0];
         this.playerID = data[1];
         this.premiumSubscription = Boolean.parseBoolean(data[2]);
@@ -139,88 +114,33 @@ public class Peticion implements SequentialFileReader, Comparable<Peticion> {
 
     /*********************************************************************
     *
-    * Nombre del método: compareTo
-    *
-    * Autor original: XX
+    * Nombre del método: toString
     *
     * Descripción del método:
-    *   Permite ordenar Peticion en estructuras con prioridad
-    *   (por ejemplo PriorityQueue). En colas premium, interesa que el
-    *   jugador con mayor nivel de habilidad tenga más prioridad.
-    *
-    *   Criterio típico:
-    *   - Devuelve valor negativo si esta petición tiene MÁS prioridad
-    *     que la otra.
-    *   - Devuelve valor positivo si esta petición tiene MENOS prioridad.
-    *   - Devuelve 0 si son equivalentes.
-    *
-    * Argumentos de entrada:
-    *   Peticion otra -> la petición con la que se compara.
+    *   Devuelve una representación textual con toda la información
+    *   de la petición, útil para depuración o mostrar resultados.
     *
     * Valor de retorno:
-    *   int -> resultado de la comparación de niveles de habilidad.
-    *          Normalmente (otra.skillLevel - this.skillLevel) para
-    *          que el más hábil salga primero.
-    *
-    * Ficheros requeridos:
-    *   No requiere ficheros.
-    *
-    * Excepciones comprobadas:
-    *   Ninguna.
+    *   String -> descripción completa de la petición.
     *
     *********************************************************************/
-    @Override
-    public int compareTo(Peticion otra) {
-        // Queremos prioridad más alta para skillLevel más alto.
-        // Si this.skillLevel = 95 y otra.skillLevel = 80,
-        // this debe ir "antes", así que devolvemos número negativo.
-        return Integer.compare(otra.skillLevel, this.skillLevel);
+    public String toString() {
+        return "Información de cada Petición: [Id Petición: " + requestID 
+            + ", Nivel de habilidad: " + skillLevel 
+            + ", Premium: " + premiumSubscription
+            + ", Tipo de partido: " + matchType 
+            + ", ID jugador: " + playerID + " ]\n";
     }
 
-    /*********************************************************************
-    *
-    * Nombre del método: getRequestID
-    *
-    * Autor original: XX
-    *
-    * Descripción del método:
-    *   Devuelve el identificador único de la petición.
-    *
-    * Argumentos de entrada:
-    *   (ninguno)
-    *
-    * Valor de retorno:
-    *   String -> identificador de la petición.
-    *
-    *********************************************************************/
+    // Métodos getters y setters de cada atributo:
     public String getRequestID() {
         return requestID;
     }
 
-    /*********************************************************************
-    *
-    * Nombre del método: setRequestID
-    *
-    * Autor original: XX
-    *
-    * Descripción del método:
-    *   Establece el identificador único de la petición.
-    *
-    * Argumentos de entrada:
-    *   String requestID -> nuevo identificador.
-    *
-    * Valor de retorno:
-    *   void
-    *
-    *********************************************************************/
     public void setRequestID(String requestID) {
         this.requestID = requestID;
     }
 
-    /*********************************************************************
-    * getPlayerID / setPlayerID
-    * Métodos de acceso para el identificador del jugador.
-    *********************************************************************/
     public String getPlayerID() {
         return playerID;
     }
@@ -229,10 +149,6 @@ public class Peticion implements SequentialFileReader, Comparable<Peticion> {
         this.playerID = playerID;
     }
 
-    /*********************************************************************
-    * isPremiumSubscription / setPremiumSubscription
-    * Devuelve o modifica si el jugador es premium.
-    *********************************************************************/
     public boolean isPremiumSubscription() {
         return premiumSubscription;
     }
@@ -241,10 +157,6 @@ public class Peticion implements SequentialFileReader, Comparable<Peticion> {
         this.premiumSubscription = premiumSubscription;
     }
 
-    /*********************************************************************
-    * getSkillLevel / setSkillLevel
-    * Devuelve o modifica el nivel de habilidad del jugador.
-    *********************************************************************/
     public int getSkillLevel() {
         return skillLevel;
     }
@@ -253,10 +165,6 @@ public class Peticion implements SequentialFileReader, Comparable<Peticion> {
         this.skillLevel = skillLevel;
     }
 
-    /*********************************************************************
-    * getMatchType / setMatchType
-    * Devuelve o modifica el tipo de partido solicitado ('L' o 'S').
-    *********************************************************************/
     public char getMatchType() {
         return matchType;
     }
@@ -264,33 +172,4 @@ public class Peticion implements SequentialFileReader, Comparable<Peticion> {
     public void setMatchType(char matchType) {
         this.matchType = matchType;
     }
-
-    /*********************************************************************
-    *
-    * Nombre del método: toString
-    *
-    * Autor original: XX
-    *
-    * Descripción del método:
-    *   Devuelve una representación en texto de la petición, útil para
-    *   depuración y trazas por consola.
-    *
-    * Argumentos de entrada:
-    *   (ninguno)
-    *
-    * Valor de retorno:
-    *   String -> cadena con los datos principales de la petición.
-    *
-    *********************************************************************/
-    @Override
-    public String toString() {
-        return "Peticion{" +
-               "requestID='" + requestID + '\'' +
-               ", playerID='" + playerID + '\'' +
-               ", premium=" + premiumSubscription +
-               ", skillLevel=" + skillLevel +
-               ", matchType=" + matchType +
-               '}';
-    }
-
 }
