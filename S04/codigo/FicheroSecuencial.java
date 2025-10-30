@@ -1,7 +1,7 @@
 /*********************************************************************
 *
 * Nombre de la clase: FicheroSecuencial
-* Iniciales autores / Grupo prácticas: RMM, HJC, PMS / G05
+* Iniciales autores / Grupo prácticas: RMM, HJG, PMS / G05
 * Fecha de creación: 
 * Versión de la clase: 
 * Descripción de la clase:
