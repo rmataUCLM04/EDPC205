@@ -21,7 +21,7 @@ public class Peticion implements SequentialFileReader, Comparable<Peticion> {
     private String playerID;              // Identificador del jugador.
     private boolean premiumSubscription;  // Indica si el jugador tiene suscripción premium.
     private int skillLevel;               // Nivel de habilidad del jugador.
-    private char matchType;               // Tipo de partido ('L' largo, 'C' corto, etc.).
+    private char matchType;               // Tipo de partido ('L' largo, 'C' corto.).
 
     /*********************************************************************
     *
