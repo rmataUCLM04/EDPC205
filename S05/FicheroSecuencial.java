@@ -1,162 +1,145 @@
+package listas;
 
 /*********************************************************************
 *
-* Class Name:
-* Author/s name:
-* Release/Creation date:
-* Class version:
-* Class description: A brief description of what the class does
+* Class Name: FicheroSecuencial
+* Author/s name: RMM, HJG, PMS 
+* Release/Creation date: 
+* Class version: 1.0
+* Class description:
+*   Clase genérica para la lectura secuencial de ficheros de texto
+*   Permite leer línea a línea, dividir los campos mediante un 
+*   separador y delegar la carga de datos a objetos que implementen 
+*   la interfaz SequentialFileReader.
 *
-**********************************************************************
-*/
+**********************************************************************/
 
 import java.io.*;
 import java.util.*;
-public class FicheroSecuencial <T extends SequentialFileReader> {
-	
-	private File file;
-	private Scanner scan;
-	private String separator;
-	
-	/*********************************************************************
-	*
-	* Method name:
-	*
-	* Name of the original author (if the module author is different
-	* than the author of the file):
-	*
-	* Description of the Method: A description of what the method does.
-	*
-	* Calling arguments: A list of the calling arguments, their types, and
-	* brief explanations of what they do.
-	*
-	* Return value: it type, and a brief explanation of what it does.
-	*
-	* Required Files: A list of required files needed by the method,
-	* indicating if the method expects files to be already opened (only if
-	* files are used)
-	*
-	* List of Checked Exceptions and an indication of when each exception
-	* is thrown.
-	*
-	*********************************************************************/
-	
-	public FicheroSecuencial(File file, Scanner scan, String separator) {
-		this.file = file;
-		this.scan = scan;
-		this.separator = separator;
-	}
-	
-	
+
+public class FicheroSecuencial<T extends SequentialFileReader> {
+
+    private File file;       // Referencia al fichero a leer
+    private Scanner scan;    // Scanner utilizado para leer el contenido del fichero
+    private String separator; // Separador de campos (por ejemplo, ";")
+
+    /*********************************************************************
+    *
+    * Method name: FicheroSecuencial
+    *
+    * Description of the Method:
+    *   Constructor de la clase. Abre el fichero indicado y prepara un
+    *   Scanner para su lectura secuencial.
+    *
+    * Calling arguments:
+    *   nombreFile (String) Nombre o ruta del fichero a abrir.
+    *   separator (String) Carácter o cadena que separa los campos.
+    *
+    * Return value: none
+    *
+    * Required Files:
+    *   Requiere el fichero indicado por 'nombreFile' existente en el sistema.
+    *
+    * Checked Exceptions:
+    *   FileNotFoundException: si el fichero especificado no existe o
+    *   no puede abrirse para lectura.
+    *
+    *********************************************************************/
+    public FicheroSecuencial(String nombreFile, String separator) throws FileNotFoundException {
+        this.file = new File(nombreFile);
+        this.scan = new Scanner(file);
+        this.separator = separator;
+    }
 
 	/*********************************************************************
-	*
-	* Method name:
-	*
-	* Name of the original author (if the module author is different
-	* than the author of the file):
-	*
-	* Description of the Method: A description of what the method does.
-	*
-	* Calling arguments: A list of the calling arguments, their types, and
-	* brief explanations of what they do.
-	*
-	* Return value: it type, and a brief explanation of what it does.
-	*
-	* Required Files: A list of required files needed by the method,
-	* indicating if the method expects files to be already opened (only if
-	* files are used)
-	*
-	* List of Checked Exceptions and an indication of when each exception
-	* is thrown.
-	*
-	*********************************************************************/
-	
-	public void read(T objeto) {
-		String[] data = scan.nextLine().split(separator);
-		objeto.leerDatos(data);
-	}
-    //devuelve un vector de cadenas String.
+	 *
+	 * Method name: read
+	 *
+	 * Description of the Method: Lee una línea del fichero, la separa en campos
+	 * usando el separador especificado, y pasa dichos datos al método readData del
+	 * objeto recibido, que será responsable de interpretar y almacenar la
+	 * información.
+	 *
+	 * Calling arguments: objeto (T) Objeto del tipo que implementa
+	 * SequentialFileReader, sobre el que se cargan los datos leídos.
+	 *
+	 * Return value: none
+	 *
+	 * Required Files: El fichero debe estar abierto mediante el Scanner interno.
+	 *
+	 * Checked Exceptions: IOException: si se produce un error al leer la línea.
+	 * NoSuchElementException: si se intenta leer más allá del final del fichero.
+	 *
+	 *********************************************************************/
+    public void read(T objeto) throws IOException {
+        String[] data = scan.nextLine().split(separator); // Divide la línea en campos
+        objeto.readData(data); // Carga los datos en el objeto correspondiente
+    }
 
-	
-	/*********************************************************************
-	*
-	* Method name:
-	*
-	* Name of the original author (if the module author is different
-	* than the author of the file):
-	*
-	* Description of the Method: A description of what the method does.
-	*
-	* Calling arguments: A list of the calling arguments, their types, and
-	* brief explanations of what they do.
-	*
-	* Return value: it type, and a brief explanation of what it does.
-	*
-	* Required Files: A list of required files needed by the method,
-	* indicating if the method expects files to be already opened (only if
-	* files are used)
-	*
-	* List of Checked Exceptions and an indication of when each exception
-	* is thrown.
-	*
-	*********************************************************************/
-	
-	public void skip() {
-		scan.nextLine();
-	}
-	
-	/*********************************************************************
-	*
-	* Method name:
-	*
-	* Name of the original author (if the module author is different
-	* than the author of the file):
-	*
-	* Description of the Method: A description of what the method does.
-	*
-	* Calling arguments: A list of the calling arguments, their types, and
-	* brief explanations of what they do.
-	*
-	* Return value: it type, and a brief explanation of what it does.
-	*
-	* Required Files: A list of required files needed by the method,
-	* indicating if the method expects files to be already opened (only if
-	* files are used)
-	*
-	* List of Checked Exceptions and an indication of when each exception
-	* is thrown.
-	*
-	*********************************************************************/
-	
-	public void close() {
-		scan.close();
-	}
-	
-	/*********************************************************************
-	*
-	* Method name:
-	*
-	* Name of the original author (if the module author is different
-	* than the author of the file):
-	*
-	* Description of the Method: A description of what the method does.
-	*
-	* Calling arguments: A list of the calling arguments, their types, and
-	* brief explanations of what they do.
-	*
-	* Return value: it type, and a brief explanation of what it does.
-	*
-	* Required Files: A list of required files needed by the method,
-	* indicating if the method expects files to be already opened (only if
-	* files are used)
-	*
-	* List of Checked Exceptions and an indication of when each exception
-	* is thrown.
-	*
-	*********************************************************************/
-	
-	public boolean isEndOfFile() {
-		return !scan.hasNextLine();
-	}
+    /*********************************************************************
+    *
+    * Method name: skip
+    *
+    * Description of the Method:
+    *   Avanza el puntero del Scanner una línea en el fichero, sin procesar
+    *   su contenido. Se usa para saltar cabeceras o líneas no deseadas.
+    *
+    * Calling arguments: none
+    *
+    * Return value: none
+    *
+    * Required Files:
+    *   El fichero debe estar abierto y contener al menos una línea adicional.
+    *
+    * Checked Exceptions:
+    *   NoSuchElementException: si se intenta saltar más allá del final del fichero.
+    *
+    *********************************************************************/
+    public void skip() {
+        scan.nextLine();
+    }
+
+    /*********************************************************************
+    *
+    * Method name: close
+    *
+    * Description of the Method:
+    *   Cierra el Scanner asociado al fichero, liberando los recursos del sistema.
+    *
+    * Calling arguments: none
+    *
+    * Return value: none
+    *
+    * Required Files:
+    *   El fichero debe haber sido abierto previamente por la clase.
+    *
+    * Checked Exceptions: none
+    *
+    *********************************************************************/
+    public void close() {
+        scan.close();
+    }
+
+    /*********************************************************************
+    *
+    * Method name: isEndOfFile
+    *
+    * Description of the Method:
+    *   Indica si se ha alcanzado el final del fichero.
+    *   Devuelve true si no quedan más líneas por leer.
+    *
+    * Calling arguments: none
+    *
+    * Return value:
+    *   boolean → true si no quedan líneas, false en caso contrario.
+    *
+    * Required Files:
+    *   El fichero debe estar abierto mediante el Scanner.
+    *
+    * Checked Exceptions: none
+    *
+    *********************************************************************/
+    public boolean isEndOfFile() {
+        return !scan.hasNextLine();
+    }
 }
