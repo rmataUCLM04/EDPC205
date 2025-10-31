@@ -32,7 +32,7 @@ public interface SequentialFileReader {
     *
     * Ficheros requeridos:
     *   Se asume que la lectura del fichero y la apertura/cierre del mismo
-    *   la gestiona otra clase (por ejemplo FicheroSecuencial).
+    *   la gestiona otra clase (FicheroSecuencial).
     *
     * Excepciones comprobadas:
     *   Depende de la implementación concreta. Por ejemplo, puede lanzar
