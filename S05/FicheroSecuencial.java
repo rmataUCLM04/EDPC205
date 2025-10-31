@@ -1,5 +1,3 @@
-package listas;
-
 /*********************************************************************
 *
 * Class Name: FicheroSecuencial
