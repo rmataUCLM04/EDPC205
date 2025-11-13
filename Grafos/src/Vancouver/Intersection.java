@@ -18,17 +18,14 @@ public class Intersection {
         return lat;
     }
 
-    @Override
     public String toString() {
         return lon + "," + lat;
     }
 
-    @Override
     public int hashCode() {
         return Float.hashCode(lon) * 31 + Float.hashCode(lat);
     }
 
-    @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
