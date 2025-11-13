@@ -7,7 +7,7 @@ public class principal {
     public static void main(String[] args) {
 
         Graph<Intersection, Segment> graph = new TreeMapGraph<>(); // Graph<Vertice, Arista>
-        File fichero = new File("bike_network.csv");
+        File fichero = new File("bikeways.csv");
         CrearGrafo(fichero, graph);
     }
 
