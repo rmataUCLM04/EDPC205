@@ -5,7 +5,8 @@ import graphsDS_ESI_UCLM_v2.*;
 
 public class Main {
     public static void main(String[] args) {
-        
+           Graph<Intersection, Segment> graph = new TreeMapGraph<>();
+               
     }
     
 }
