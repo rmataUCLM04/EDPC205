@@ -12,10 +12,15 @@ public class Segment {
     private float length;
     private Integer year;
 
-    private Intersection origin;
-    private Intersection destination;
+    // Ya no hay Intersection
+    private String originId;      
+    private String destinationId;
 
     private boolean virtual;
+
+    public Segment() {
+        // Constructor vacío para usar con readData
+    }
 
     public Segment(int objectId,
             String routeName,
@@ -26,8 +31,8 @@ public class Segment {
             boolean snowRemoval,
             float length,
             Integer year,
-            Intersection origin,
-            Intersection destination,
+            String originId,
+            String destinationId,
             boolean virtual) {
 
         this.objectId = objectId;
@@ -39,79 +44,49 @@ public class Segment {
         this.snowRemoval = snowRemoval;
         this.length = length;
         this.year = year;
-        this.origin = origin;
-        this.destination = destination;
+        this.originId = originId;
+        this.destinationId = destinationId;
         this.virtual = virtual;
     }
 
-    // Getters
+    // readData 
+    public void readData(String[] data) {
 
-    public int getObjectId() {
-        return objectId;
+        this.objectId = Integer.parseInt(data[0]);
+        this.routeName = data[1];
+        this.streetName = data[2];
+        this.bikewayType = data[3];
+
+        this.speedLimit = data[4].isEmpty() ? null : Integer.parseInt(data[4]);
+        this.surfaceType = data[5];
+        this.snowRemoval = data[6].equalsIgnoreCase("Yes");
+
+        this.length = Float.parseFloat(data[7]);
+        this.year = data[8].isEmpty() ? null : Integer.parseInt(data[8]);
+
+        // Las coordenadas se convierten en un identificador de nodo
+        String latO = data[9];
+        String lonO = data[10];
+        String latD = data[11];
+        String lonD = data[12];
+
+        this.originId = latO + "," + lonO;
+        this.destinationId = latD + "," + lonD;
+
+        this.virtual = data[13].equalsIgnoreCase("Yes");
     }
 
-    public String getRouteName() {
-        return routeName;
+    public String getOriginId() {
+        return originId;
     }
 
-    public String getStreetName() {
-        return streetName;
-    }
-
-    public String getBikewayType() {
-        return bikewayType;
-    }
-
-    public Integer getSpeedLimit() {
-        return speedLimit;
-    }
-
-    public String getSurfaceType() {
-        return surfaceType;
-    }
-
-    public boolean hasSnowRemoval() {
-        return snowRemoval;
-    }
-
-    public float getLength() {
-        return length;
-    }
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public Intersection getOrigin() {
-        return origin;
-    }
-
-    public Intersection getDestination() {
-        return destination;
+    public String getDestinationId() {
+        return destinationId;
     }
 
     public boolean isVirtual() {
         return virtual;
     }
 
-    // Filtros del enunciado
-
-    public boolean isValidBase() {
-        return speedLimit != null && speedLimit >= 30
-                && length > 10
-                && year != null && year >= 1990;
-    }
-
-    public boolean isProtectedWithSnow() {
-        return "Protected Bike Lanes".equalsIgnoreCase(bikewayType)
-                && snowRemoval;
-    }
-
-    public boolean isSpeed30() {
-        return speedLimit != null && speedLimit == 30;
-    }
-
-    public String toString() {
-        return "ID " + objectId + " | " + routeName + " | " + length + " m";
-    }
+    // demás getters igual…
 }

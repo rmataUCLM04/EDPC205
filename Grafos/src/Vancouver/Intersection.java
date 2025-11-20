@@ -10,6 +10,11 @@ public class Intersection {
         this.lat = lat;
     }
 
+    public void readData(String[] data) {
+        this.lon = Float.parseFloat(data[0]);
+        this.lat = Float.parseFloat(data[1]);
+    }
+
     public float getLon() {
         return lon;
     }
