@@ -7,12 +7,11 @@ import graphsDS_ESI_UCLM_v2.*;
 public class principal {
     public static void main(String[] args) {
 
-        Graph<String, Segment> graph = new TreeMapGraph<>(); // Graph<Vertice, Arista>
-        File fichero = new File("bikeways.csv");
-        CrearGrafo(fichero, graph);
+        Graph<Intersection, Segment> graph = new TreeMapGraph<>(); // Graph<Vertice, Arista>
+        CrearGrafo(graph);
     }
 
-    public static void CrearGrafo(File fichero, Graph<String, Segment> graph) {
+    public static void CrearGrafo(Graph <Intersection, Segment> graph) {
         
         
     }

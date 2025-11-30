@@ -1,30 +1,35 @@
 package Vancouver;
+import java.math.BigDecimal;
+public class Intersection implements SequentialFileReader{
 
-public class Intersection {
-
-    private float lon;
     private float lat;
+    private float lon;
 
-    public Intersection(float lon, float lat) {
-        this.lon = lon;
+    public Intersection(float lat, float lon) {
         this.lat = lat;
+        this.lon = lon;
     }
-
-    public void readData(String[] data) {
-        this.lon = Float.parseFloat(data[0]);
-        this.lat = Float.parseFloat(data[1]);
+    
+    // Getters
+    public float getLat() {
+        return lat;
     }
 
     public float getLon() {
         return lon;
     }
 
-    public float getLat() {
-        return lat;
+    // Setters
+    public void setLat(float lat) {
+        this.lat = lat;
     }
 
-    public String toString() {
-        return lon + "," + lat;
+    public void setLon(float lon) {
+        this.lon = lon;
+    }
+
+    public void readData(String[] data) {
+        
     }
 
     public int hashCode() {
@@ -39,4 +44,10 @@ public class Intersection {
         Intersection other = (Intersection) obj;
         return this.lon == other.lon && this.lat == other.lat;
     }
+
+
+    
+
+    
+    
 }

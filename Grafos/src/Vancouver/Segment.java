@@ -1,6 +1,6 @@
 package Vancouver;
-
-public class Segment {
+import java.math.BigDecimal;
+public class Segment implements SequentialFileReader{
 
     private int objectId;
     private String routeName;
@@ -12,11 +12,7 @@ public class Segment {
     private float length;
     private Integer year;
 
-    // Ya no hay Intersection
-    private String originId;      
-    private String destinationId;
-
-    private boolean virtual;
+    
 
     public Segment() {
         // Constructor vacío para usar con readData
@@ -44,9 +40,6 @@ public class Segment {
         this.snowRemoval = snowRemoval;
         this.length = length;
         this.year = year;
-        this.originId = originId;
-        this.destinationId = destinationId;
-        this.virtual = virtual;
     }
 
     // readData 
@@ -69,24 +62,77 @@ public class Segment {
         String lonO = data[10];
         String latD = data[11];
         String lonD = data[12];
-
-        this.originId = latO + "," + lonO;
-        this.destinationId = latD + "," + lonD;
-
-        this.virtual = data[13].equalsIgnoreCase("Yes");
     }
+    public int getObjectId() {
+    return objectId;
+}
 
-    public String getOriginId() {
-        return originId;
-    }
+public void setObjectId(int objectId) {
+    this.objectId = objectId;
+}
 
-    public String getDestinationId() {
-        return destinationId;
-    }
+public String getRouteName() {
+    return routeName;
+}
 
-    public boolean isVirtual() {
-        return virtual;
-    }
+public void setRouteName(String routeName) {
+    this.routeName = routeName;
+}
 
-    // demás getters igual…
+public String getStreetName() {
+    return streetName;
+}
+
+public void setStreetName(String streetName) {
+    this.streetName = streetName;
+}
+
+public String getBikewayType() {
+    return bikewayType;
+}
+
+public void setBikewayType(String bikewayType) {
+    this.bikewayType = bikewayType;
+}
+
+public Integer getSpeedLimit() {
+    return speedLimit;
+}
+
+public void setSpeedLimit(Integer speedLimit) {
+    this.speedLimit = speedLimit;
+}
+
+public String getSurfaceType() {
+    return surfaceType;
+}
+
+public void setSurfaceType(String surfaceType) {
+    this.surfaceType = surfaceType;
+}
+
+public boolean isSnowRemoval() {
+    return snowRemoval;
+}
+
+public void setSnowRemoval(boolean snowRemoval) {
+    this.snowRemoval = snowRemoval;
+}
+
+public float getLength() {
+    return length;
+}
+
+public void setLength(float length) {
+    this.length = length;
+}
+
+public Integer getYear() {
+    return year;
+}
+
+public void setYear(Integer year) {
+    this.year = year;
+}
+
 }
